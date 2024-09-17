@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RemindMe</string>
+    <string name="error_message">Something went wrong</string>
+    <string name="empty_reminders_list_info">Reminders list is empty</string>
+    <string name="info_icon_content_description">Info icon</string>
+    <string name="fab_content_description">Floating action button</string>
 </resources>

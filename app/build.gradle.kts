@@ -68,6 +68,7 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.google.accompanist)
 
     testImplementation(libs.junit)
