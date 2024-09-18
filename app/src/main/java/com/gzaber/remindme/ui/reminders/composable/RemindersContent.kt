@@ -44,19 +44,25 @@ private fun RemindersContentPreview() {
                 UiReminder(
                     id = 1,
                     name = "Do something 1",
-                    color = Color.Red,
+                    color = Color.LightGray,
                     expiration = "2024-04-01 12:00"
                 ),
                 UiReminder(
                     id = 2,
                     name = "Do something 2",
-                    color = Color.Green,
+                    color = Color.Red,
                     expiration = "2024-04-01 12:00"
                 ),
                 UiReminder(
                     id = 3,
                     name = "Do something 3",
-                    color = Color.Blue,
+                    color = Color.Green,
+                    expiration = "2024-04-01 12:00"
+                ),
+                UiReminder(
+                    id = 4,
+                    name = "Do something 4",
+                    color = Color.Yellow,
                     expiration = "2024-04-01 12:00"
                 ),
             ),

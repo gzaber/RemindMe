@@ -8,7 +8,6 @@ import kotlinx.datetime.LocalDateTime
 data class ReminderEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
-    val color: Int,
     val expiration: LocalDateTime,
     val advance: LocalDateTime
 )
