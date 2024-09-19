@@ -7,5 +7,6 @@ interface RemindersRepository {
     suspend fun create(reminder: Reminder)
     suspend fun update(reminder: Reminder)
     suspend fun delete(reminder: Reminder)
+    suspend fun read(id: Int): Reminder
     fun observeAll(): Flow<List<Reminder>>
 }
