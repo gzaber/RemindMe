@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.gzaber.remindme.ui.reminders.RemindersScreen
+import com.gzaber.remindme.ui.addedit.AddEditScreen
 import com.gzaber.remindme.ui.theme.RemindMeTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RemindMeTheme {
-                RemindersScreen()
+                AddEditScreen(title = R.string.add_edit_app_bar_create_title)
             }
         }
     }

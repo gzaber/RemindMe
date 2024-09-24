@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">RemindMe</string>
     <string name="error_message">Something went wrong</string>
+    <string name="confirm_button_text">OK</string>
+    <string name="dismiss_button_text">Dismiss</string>
     <string name="empty_reminders_list_info">Reminders list is empty</string>
     <string name="info_icon_content_description">Info icon</string>
     <string name="fab_content_description">Floating action button</string>
+    <string name="add_edit_app_bar_create_title">Create reminder</string>
+    <string name="add_edit_app_bar_update_title">Update reminder</string>
+    <string name="add_edit_name_title">Name</string>
+    <string name="add_edit_date_title">Date</string>
+    <string name="add_edit_time_title">Time</string>
+    <string name="add_edit_advance_title">Advance</string>
+    <string name="add_edit_advance_value_suffix">before</string>
+    <string name="add_edit_name_placeholder">Something to remind</string>
+    <string name="add_edit_date_icon_description">Date button</string>
+    <string name="add_edit_time_icon_description">Time button</string>
+    <string name="add_edit_advance_icon_description">Advance button</string>
+    <string name="add_edit_save_icon_description">Save reminder button</string>
+
 </resources>
