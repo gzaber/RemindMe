@@ -1,2 +1,4 @@
 # RemindMe
-Android reminder app
+Android reminder app  
+
+Work in progress...

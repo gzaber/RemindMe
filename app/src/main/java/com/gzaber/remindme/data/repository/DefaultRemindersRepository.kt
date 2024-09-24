@@ -34,6 +34,8 @@ class DefaultRemindersRepository(
         alarmService.delete(reminder.id)
     }
 
+    override suspend fun read(id: Int) = remindersDataSource.read(id).toModel()
+
     override fun observeAll(): Flow<List<Reminder>> =
         remindersDataSource.observeAll().map { entity ->
             entity.map {
