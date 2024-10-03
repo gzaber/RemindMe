@@ -29,9 +29,9 @@ class DefaultRemindersRepository(
         setReminders(reminder)
     }
 
-    override suspend fun delete(reminder: Reminder) {
-        remindersDataSource.delete(reminder.toEntity())
-        alarmService.delete(reminder.id)
+    override suspend fun delete(id: Int) {
+        remindersDataSource.delete(id)
+        alarmService.delete(id)
     }
 
     override suspend fun read(id: Int) = remindersDataSource.read(id).toModel()
