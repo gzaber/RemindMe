@@ -28,6 +28,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemindersScreen(
+    onNavigateToAddEdit: (Int?) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     viewModel: RemindersViewModel = koinViewModel()
 ) {
@@ -50,7 +51,7 @@ fun RemindersScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = { onNavigateToAddEdit(null) },
             ) {
                 Icon(
                     Icons.Default.Add,

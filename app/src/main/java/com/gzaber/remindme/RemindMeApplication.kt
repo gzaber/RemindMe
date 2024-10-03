@@ -6,12 +6,12 @@ import com.gzaber.remindme.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App : Application() {
+class RemindMeApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidContext(this@App)
+            androidContext(this@RemindMeApplication)
             modules(dataModule, viewModelModule)
         }
     }

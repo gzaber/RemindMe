@@ -3,6 +3,7 @@ package com.gzaber.remindme.ui.addedit
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AddEditScreen(
     @StringRes title: Int,
+    onNavigateBack: () -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     viewModel: AddEditViewModel = koinViewModel()
 ) {
@@ -46,6 +48,14 @@ fun AddEditScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = stringResource(R.string.add_edit_close_icon_description)
+                        )
+                    }
+                },
                 actions = {
                     IconButton(onClick = viewModel::saveReminder) {
                         Icon(

@@ -18,5 +18,6 @@
     <string name="add_edit_time_icon_description">Time button</string>
     <string name="add_edit_advance_icon_description">Advance button</string>
     <string name="add_edit_save_icon_description">Save reminder button</string>
+    <string name="add_edit_close_icon_description">Close screen button</string>
 
 </resources>
