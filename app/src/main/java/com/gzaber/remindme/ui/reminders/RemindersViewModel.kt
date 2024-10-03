@@ -3,6 +3,7 @@ package com.gzaber.remindme.ui.reminders
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.remindme.data.repository.RemindersRepository
+import com.gzaber.remindme.data.repository.model.Reminder
 import com.gzaber.remindme.ui.reminders.model.UiReminder
 import com.gzaber.remindme.ui.reminders.model.toUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,18 @@ class RemindersViewModel(
                         )
                     }
                 }
+        }
+    }
+
+    fun deleteReminder(id: Int) {
+        viewModelScope.launch {
+            try {
+                remindersRepository.delete(id)
+            } catch (e: Throwable) {
+                _uiState.update {
+                    it.copy(isError = true)
+                }
+            }
         }
     }
 }

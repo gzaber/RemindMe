@@ -67,6 +67,8 @@ fun RemindersScreen(
         } else {
             RemindersContent(
                 reminders = uiState.reminders,
+                onUpdateReminder = onNavigateToAddEdit,
+                onDeleteReminder = viewModel::deleteReminder,
                 contentPadding = contentPadding
             )
         }

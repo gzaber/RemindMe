@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,9 +18,14 @@ import com.gzaber.remindme.ui.theme.RemindMeTheme
 @Composable
 fun RemindersContent(
     reminders: List<UiReminder>,
+    onUpdateReminder: (Int) -> Unit,
+    onDeleteReminder: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
+    val showDeleteDialog = remember { mutableStateOf(false) }
+    val reminderId = remember { mutableIntStateOf(0) }
+
     if (reminders.isEmpty()) {
         EmptyListInfo(
             contentPadding = contentPadding,
@@ -29,9 +37,26 @@ fun RemindersContent(
             modifier = modifier.fillMaxSize()
         ) {
             items(reminders, key = { it.id }) { reminder ->
-                ReminderListItem(reminder = reminder)
+                ReminderListItem(
+                    reminder = reminder,
+                    onUpdateClick = { onUpdateReminder(reminder.id) },
+                    onDeleteClick = {
+                        reminderId.intValue = reminder.id
+                        showDeleteDialog.value = true
+                    }
+                )
             }
         }
+    }
+
+    if (showDeleteDialog.value) {
+        DeleteReminderDialog(
+            onConfirmation = {
+                onDeleteReminder(reminderId.intValue)
+                showDeleteDialog.value = false
+            },
+            onDismissRequest = { showDeleteDialog.value = false }
+        )
     }
 }
 
@@ -66,7 +91,9 @@ private fun RemindersContentPreview() {
                     expiration = "2024-04-01 12:00"
                 ),
             ),
-            contentPadding = PaddingValues(16.dp)
+            onUpdateReminder = {},
+            onDeleteReminder = {},
+            contentPadding = PaddingValues(0.dp)
         )
     }
 }
@@ -77,7 +104,9 @@ private fun RemindersContentEmptyListPreview() {
     RemindMeTheme {
         RemindersContent(
             reminders = emptyList(),
-            contentPadding = PaddingValues(16.dp)
+            onUpdateReminder = {},
+            onDeleteReminder = {},
+            contentPadding = PaddingValues(0.dp)
         )
     }
 }
