@@ -12,9 +12,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toInstant
@@ -74,9 +76,7 @@ class AddEditViewModel(
     val advanceValues = (1..30).toList()
 
     init {
-        if (_reminderId != null) {
-            readReminder(_reminderId)
-        }
+        if (_reminderId != null) readReminder(_reminderId)
     }
 
     fun onNameChanged(name: String) {
@@ -91,6 +91,7 @@ class AddEditViewModel(
                 it.copy(expirationDateMillis = dateMillis)
             }
         }
+
     }
 
     fun onTimeChanged(hour: Int, minute: Int) {
@@ -131,16 +132,27 @@ class AddEditViewModel(
 
     fun saveReminder() {
         _uiState.update { it.copy(isLoading = true) }
-        val expirationDateTime = Instant.fromEpochMilliseconds(_uiState.value.expirationDateMillis)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
+        val timeZone = TimeZone.currentSystemDefault()
+        val expirationDate = Instant.fromEpochMilliseconds(_uiState.value.expirationDateMillis)
+            .toLocalDateTime(timeZone).date
+        val expirationTime = LocalTime(
+            hour = _uiState.value.expirationHour,
+            minute = _uiState.value.expirationMinute
+        )
+        val expirationDateTime = LocalDateTime(expirationDate, expirationTime)
+        val advanceDateTimePeriod = DateTimePeriod(
+            days = if (_uiState.value.advanceUnit == DateTimeUnit.DAY) _uiState.value.advanceValue else 0,
+            hours = if (_uiState.value.advanceUnit == DateTimeUnit.HOUR) _uiState.value.advanceValue else 0,
+            minutes = if (_uiState.value.advanceUnit == DateTimeUnit.MINUTE) _uiState.value.advanceValue else 0,
+        )
+        val advanceDateTime = expirationDateTime.toInstant(timeZone)
+            .minus(advanceDateTimePeriod, timeZone)
+            .toLocalDateTime(timeZone)
+
         val reminder = Reminder(
             name = _uiState.value.name,
             expiration = expirationDateTime,
-            advance = calculateAdvanceDateTime(
-                _uiState.value.advanceValue,
-                _uiState.value.advanceUnit,
-                _uiState.value.expirationDateMillis
-            )
+            advance = advanceDateTime
         )
 
         viewModelScope.launch {
@@ -199,7 +211,7 @@ class AddEditViewModel(
             Pair(durationDifference.inWholeHours, DurationUnit.HOURS),
             Pair(durationDifference.inWholeDays, DurationUnit.DAYS)
         )
-        val min = advancePairs.minBy { it.first }
+        val min = advancePairs.filter { it.first > 0 }.minBy { it.first }
         val advanceValue = min.first.toInt()
         val advanceUnit = when (min.second) {
             DurationUnit.MINUTES -> DateTimeUnit.MINUTE
@@ -208,18 +220,5 @@ class AddEditViewModel(
         }
 
         return Pair(advanceValue, advanceUnit)
-    }
-
-    private fun calculateAdvanceDateTime(
-        advanceValue: Int,
-        advanceUnit: DateTimeUnit,
-        expirationMillis: Long
-    ): LocalDateTime {
-        val timeZone = TimeZone.currentSystemDefault()
-        val advance = Instant.fromEpochMilliseconds(expirationMillis)
-            .minus(advanceValue, advanceUnit, timeZone)
-            .toLocalDateTime(timeZone)
-
-        return advance
     }
 }
