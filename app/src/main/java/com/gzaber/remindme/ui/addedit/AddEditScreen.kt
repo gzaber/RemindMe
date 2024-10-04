@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +26,6 @@ import com.gzaber.remindme.ui.addedit.composable.AddEditContent
 import com.gzaber.remindme.ui.addedit.composable.AdvancePickerModal
 import com.gzaber.remindme.ui.addedit.composable.DatePickerModal
 import com.gzaber.remindme.ui.addedit.composable.TimePickerModal
-import com.gzaber.remindme.ui.reminders.composable.LoadingBox
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,31 +58,31 @@ fun AddEditScreen(
                 },
                 actions = {
                     IconButton(onClick = viewModel::saveReminder) {
-                        Icon(
-                            Icons.Default.Check,
-                            contentDescription = stringResource(R.string.add_edit_save_icon_description)
-                        )
+                        if (uiState.isLoading) {
+                            CircularProgressIndicator()
+                        } else {
+                            Icon(
+                                Icons.Default.Check,
+                                contentDescription = stringResource(R.string.add_edit_save_icon_description)
+                            )
+                        }
                     }
                 }
             )
         },
     )
     { contentPadding ->
-        if (uiState.isLoading) {
-            LoadingBox(contentPadding = contentPadding)
-        } else {
-            AddEditContent(
-                contentPadding = contentPadding,
-                nameValue = uiState.name,
-                dateValue = uiState.formattedDate,
-                timeValue = uiState.formattedTime,
-                advanceValue = uiState.formattedAdvance,
-                onNameChanged = viewModel::onNameChanged,
-                onDateButtonClick = viewModel::toggleShowingDatePicker,
-                onTimeButtonClick = viewModel::toggleShowingTimePicker,
-                onAdvanceButtonClick = viewModel::toggleShowingAdvancePicker
-            )
-        }
+        AddEditContent(
+            contentPadding = contentPadding,
+            nameValue = uiState.name,
+            dateValue = uiState.formattedDate,
+            timeValue = uiState.formattedTime,
+            advanceValue = uiState.formattedAdvance,
+            onNameChanged = viewModel::onNameChanged,
+            onDateButtonClick = viewModel::toggleShowingDatePicker,
+            onTimeButtonClick = viewModel::toggleShowingTimePicker,
+            onAdvanceButtonClick = viewModel::toggleShowingAdvancePicker
+        )
 
         if (uiState.showDatePicker) {
             DatePickerModal(
@@ -116,6 +116,12 @@ fun AddEditScreen(
                 onAdvanceUnitSelected = viewModel::onAdvanceUnitChanged,
                 onDismiss = viewModel::toggleShowingAdvancePicker
             )
+        }
+
+        if (uiState.isSaved) {
+            LaunchedEffect(uiState) {
+                onNavigateBack()
+            }
         }
 
         if (uiState.isError) {
