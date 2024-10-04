@@ -3,6 +3,8 @@ package com.gzaber.remindme.ui.addedit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.gzaber.remindme.AddEdit
 import com.gzaber.remindme.data.repository.RemindersRepository
 import com.gzaber.remindme.data.repository.model.Reminder
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +34,7 @@ data class AddEditUiState(
     val showTimePicker: Boolean = false,
     val showAdvancePicker: Boolean = false,
     val isLoading: Boolean = false,
+    val isSaved: Boolean = false,
     val isError: Boolean = false
 ) {
     val formattedDate: String
@@ -64,7 +67,7 @@ class AddEditViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _reminderId: Int? = savedStateHandle["REMINDER_ID"]
+    private val _reminderId: Int? = savedStateHandle.toRoute<AddEdit>().id
     private val _uiState = MutableStateFlow(AddEditUiState())
     val uiState = _uiState.asStateFlow()
     val advanceUnits = listOf(DateTimeUnit.MINUTE, DateTimeUnit.HOUR, DateTimeUnit.DAY)
@@ -127,9 +130,7 @@ class AddEditViewModel(
     }
 
     fun saveReminder() {
-        _uiState.update {
-            it.copy(isLoading = true)
-        }
+        _uiState.update { it.copy(isLoading = true) }
         val expirationDateTime = Instant.fromEpochMilliseconds(_uiState.value.expirationDateMillis)
             .toLocalDateTime(TimeZone.currentSystemDefault())
         val reminder = Reminder(
@@ -149,6 +150,7 @@ class AddEditViewModel(
                 } else {
                     remindersRepository.update(reminder.copy(id = _reminderId))
                 }
+                _uiState.update { it.copy(isSaved = true) }
             } catch (e: Throwable) {
                 _uiState.update {
                     it.copy(
@@ -157,14 +159,10 @@ class AddEditViewModel(
                     )
                 }
             }
-
         }
     }
 
     private fun readReminder(id: Int) {
-        _uiState.update {
-            it.copy(isLoading = true)
-        }
         viewModelScope.launch {
             try {
                 remindersRepository.read(id).let { reminder ->
@@ -185,14 +183,8 @@ class AddEditViewModel(
                     }
                 }
             } catch (e: Throwable) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isError = true
-                    )
-                }
+                _uiState.update { it.copy(isError = true) }
             }
-
         }
     }
 
@@ -230,6 +222,4 @@ class AddEditViewModel(
 
         return advance
     }
-
-
 }
