@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import androidx.room.Room
 import com.gzaber.remindme.data.repository.DefaultRemindersRepository
 import com.gzaber.remindme.data.repository.RemindersRepository
-import com.gzaber.remindme.data.service.AlarmReceiver
 import com.gzaber.remindme.data.service.AlarmService
 import com.gzaber.remindme.data.service.DefaultAlarmService
 import com.gzaber.remindme.data.service.DefaultNotificationService
@@ -19,18 +18,19 @@ val dataModule = module {
     single<AlarmManager> {
         androidContext().getSystemService(AlarmManager::class.java)
     }
+
     single<NotificationManager> {
         androidContext().getSystemService(NotificationManager::class.java)
     }
-    single<AlarmReceiver> {
-        AlarmReceiver(get())
-    }
+
     single<AlarmService> {
         DefaultAlarmService(get(), androidContext())
     }
+
     single<NotificationService> {
         DefaultNotificationService(get(), androidContext())
     }
+
     single<RemindersDatabase> {
         Room.databaseBuilder(
             androidContext(),
@@ -38,9 +38,11 @@ val dataModule = module {
             "reminders_db"
         ).build()
     }
+
     single<RemindersDao> {
         get<RemindersDatabase>().remindersDao()
     }
+
     single<RemindersRepository> {
         DefaultRemindersRepository(get(), get())
     }
