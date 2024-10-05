@@ -60,7 +60,7 @@ class DefaultRemindersRepository(
             expirationMillis
         )
         alarmService.schedule(
-            id ?: reminder.id,
+            id?.unaryMinus() ?: reminder.id,
             reminder.name,
             formattedExpiration,
             advanceMillis
