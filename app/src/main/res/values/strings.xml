@@ -20,9 +20,9 @@
     <string name="add_edit_advance_title">Advance</string>
     <string name="add_edit_advance_value_suffix">before</string>
     <string name="add_edit_name_placeholder">Something to remind</string>
-    <string name="add_edit_date_icon_description">Date button</string>
-    <string name="add_edit_time_icon_description">Time button</string>
-    <string name="add_edit_advance_icon_description">Advance button</string>
+    <string name="add_edit_date_icon_description">Date selector</string>
+    <string name="add_edit_time_icon_description">Time selector</string>
+    <string name="add_edit_advance_icon_description">Advance selector</string>
     <string name="add_edit_save_icon_description">Save reminder button</string>
     <string name="add_edit_close_icon_description">Close screen button</string>
 

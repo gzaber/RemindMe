@@ -10,8 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -60,37 +58,25 @@ fun AddEditContent(
         }
         InputSelector(
             title = stringResource(R.string.add_edit_date_title),
-            textValue = dateValue
-        ) {
-            IconButton(onClick = onDateButtonClick) {
-                Icon(
-                    Icons.Default.DateRange,
-                    contentDescription = stringResource(R.string.add_edit_date_icon_description)
-                )
-            }
-        }
+            textValue = dateValue,
+            icon = Icons.Default.DateRange,
+            iconDescriptionText = stringResource(R.string.add_edit_date_icon_description),
+            onClick = onDateButtonClick
+        )
         InputSelector(
             title = stringResource(R.string.add_edit_time_title),
-            textValue = timeValue
-        ) {
-            IconButton(onClick = onTimeButtonClick) {
-                Icon(
-                    Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.add_edit_time_icon_description)
-                )
-            }
-        }
+            textValue = timeValue,
+            icon = Icons.Default.Settings,
+            iconDescriptionText = stringResource(R.string.add_edit_time_icon_description),
+            onClick = onTimeButtonClick
+        )
         InputSelector(
             title = stringResource(R.string.add_edit_advance_title),
-            textValue = "$advanceValue ${stringResource(R.string.add_edit_advance_value_suffix)}"
-        ) {
-            IconButton(onClick = onAdvanceButtonClick) {
-                Icon(
-                    Icons.Default.Notifications,
-                    contentDescription = stringResource(R.string.add_edit_advance_icon_description)
-                )
-            }
-        }
+            textValue = "$advanceValue ${stringResource(R.string.add_edit_advance_value_suffix)}",
+            icon = Icons.Default.Notifications,
+            iconDescriptionText = stringResource(R.string.add_edit_advance_icon_description),
+            onClick = onAdvanceButtonClick
+        )
     }
 }
 
