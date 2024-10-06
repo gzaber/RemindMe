@@ -4,17 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,13 +15,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.gzaber.remindme.R
+import com.gzaber.remindme.ui.addedit.composable.AddEditAppBar
 import com.gzaber.remindme.ui.addedit.composable.AddEditContent
 import com.gzaber.remindme.ui.addedit.composable.AdvancePickerModal
 import com.gzaber.remindme.ui.addedit.composable.DatePickerModal
 import com.gzaber.remindme.ui.addedit.composable.TimePickerModal
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditScreen(
     @StringRes title: Int,
@@ -41,33 +34,16 @@ fun AddEditScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = stringResource(title))
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ),
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            Icons.Default.Close,
-                            contentDescription = stringResource(R.string.add_edit_close_icon_description)
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = viewModel::saveReminder) {
-                        if (uiState.isLoading) {
-                            CircularProgressIndicator()
-                        } else {
-                            Icon(
-                                Icons.Default.Check,
-                                contentDescription = stringResource(R.string.add_edit_save_icon_description)
-                            )
-                        }
-                    }
-                }
+            AddEditAppBar(
+                title = stringResource(title),
+                color = MaterialTheme.colorScheme.primaryContainer,
+                isLoading = uiState.isLoading,
+                navigationIcon = Icons.Default.Close,
+                navigationIconDescription = stringResource(R.string.add_edit_close_icon_description),
+                saveIcon = Icons.Default.Check,
+                saveIconDescription = stringResource(R.string.add_edit_save_icon_description),
+                onNavigateBack = onNavigateBack,
+                onSave = viewModel::saveReminder
             )
         },
     )
