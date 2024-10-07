@@ -1,5 +1,6 @@
 package com.gzaber.remindme.ui.addedit.composable
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,22 +20,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gzaber.remindme.R
 import com.gzaber.remindme.ui.theme.RemindMeTheme
 
 @Composable
 fun InputSelector(
-    title: String,
+    @StringRes title: Int,
     textValue: String,
     icon: ImageVector,
-    iconDescriptionText: String,
+    @StringRes iconDescriptionText: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+    Column(modifier = modifier) {
         Text(
-            text = title,
+            text = stringResource(title),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -61,7 +64,7 @@ fun InputSelector(
             )
             Icon(
                 icon,
-                contentDescription = iconDescriptionText,
+                contentDescription = stringResource(iconDescriptionText),
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
@@ -73,10 +76,10 @@ fun InputSelector(
 private fun InputSelectorPreview() {
     RemindMeTheme {
         InputSelector(
-            title = "Title",
+            title = R.string.add_edit_date_title,
             textValue = "Some title",
             icon = Icons.Default.DateRange,
-            iconDescriptionText = "icon description",
+            iconDescriptionText = R.string.add_edit_date_icon_description,
             onClick = {}
         )
     }

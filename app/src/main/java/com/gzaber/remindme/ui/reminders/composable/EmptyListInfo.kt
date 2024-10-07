@@ -1,9 +1,9 @@
 package com.gzaber.remindme.ui.reminders.composable
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -25,23 +25,21 @@ fun EmptyListInfo(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     infoIcon: ImageVector = Icons.Filled.Info,
-    infoIconContentDescription: String = stringResource(R.string.info_icon_content_description),
-    infoText: String = stringResource(R.string.empty_reminders_list_info)
+    @StringRes infoIconContentDescription: Int = R.string.info_icon_content_description,
+    @StringRes infoText: Int = R.string.empty_reminders_list_info
 ) {
     Column(
-        modifier = modifier
-            .padding(contentPadding)
-            .fillMaxSize(),
+        modifier = modifier.padding(contentPadding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             infoIcon,
-            contentDescription = infoIconContentDescription,
+            contentDescription = stringResource(infoIconContentDescription),
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
-            text = infoText,
+            text = stringResource(infoText),
             style = MaterialTheme.typography.bodyLarge
         )
     }

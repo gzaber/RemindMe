@@ -1,5 +1,6 @@
 package com.gzaber.remindme.ui.addedit.composable
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +32,6 @@ import com.gzaber.remindme.R
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AdvancePickerModal(
-    title: String,
     advanceUnits: List<String>,
     selectedAdvanceUnit: String,
     advanceValues: List<Int>,
@@ -39,11 +39,13 @@ fun AdvancePickerModal(
     onAdvanceUnitSelected: (Int) -> Unit,
     onAdvanceValueSelected: (Int) -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @StringRes title: Int = R.string.add_edit_advance_title,
+    @StringRes closeButtonText: Int = R.string.close_button_text
 ) {
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        modifier = modifier
+        modifier = modifier,
+        onDismissRequest = onDismiss
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -55,11 +57,11 @@ fun AdvancePickerModal(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = title,
+                    text = stringResource(title),
                     style = MaterialTheme.typography.titleMedium
                 )
                 TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(R.string.close_button_text))
+                    Text(text = stringResource(closeButtonText))
                 }
             }
             Row(

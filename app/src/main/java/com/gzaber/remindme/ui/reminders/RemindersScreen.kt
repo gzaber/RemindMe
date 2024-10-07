@@ -1,9 +1,7 @@
 package com.gzaber.remindme.ui.reminders
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -12,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.gzaber.remindme.R
 import com.gzaber.remindme.ui.reminders.composable.LoadingBox
@@ -31,15 +30,10 @@ fun RemindersScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            RemindersAppBar(
-                title = stringResource(R.string.app_name),
-                color = MaterialTheme.colorScheme.primaryContainer
-            )
+            RemindersAppBar(title = R.string.app_name)
         },
         floatingActionButton = {
             RemindersFloatingActionButton(
-                icon = Icons.Default.Add,
-                iconDescription = stringResource(R.string.fab_content_description),
                 onClick = { onNavigateToAddEdit(null) }
             )
         },
@@ -47,9 +41,13 @@ fun RemindersScreen(
     )
     { contentPadding ->
         if (uiState.isLoading) {
-            LoadingBox(contentPadding = contentPadding)
+            LoadingBox(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = contentPadding
+            )
         } else {
             RemindersContent(
+                modifier = Modifier.fillMaxSize(),
                 reminders = uiState.reminders,
                 onUpdateReminder = onNavigateToAddEdit,
                 onDeleteReminder = viewModel::deleteReminder,

@@ -1,5 +1,6 @@
 package com.gzaber.remindme.ui.reminders.composable
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.gzaber.remindme.R
 
@@ -20,7 +22,11 @@ import com.gzaber.remindme.R
 fun ReminderMenuButton(
     onUpdateClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    icon: ImageVector = Icons.Default.MoreVert,
+    @StringRes iconDescription: Int = R.string.reminder_menu_button_icon_description,
+    @StringRes updateMenuOption: Int = R.string.reminder_menu_button_update_option,
+    @StringRes deleteMenuOption: Int = R.string.reminder_menu_button_delete_option
 ) {
     val isExpanded = remember { mutableStateOf(false) }
 
@@ -29,8 +35,8 @@ fun ReminderMenuButton(
             onClick = { isExpanded.value = true }
         ) {
             Icon(
-                Icons.Default.MoreVert,
-                contentDescription = stringResource(R.string.reminder_menu_button_icon_description)
+                icon,
+                contentDescription = stringResource(iconDescription)
             )
         }
         DropdownMenu(
@@ -38,7 +44,7 @@ fun ReminderMenuButton(
             onDismissRequest = { isExpanded.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.reminder_menu_button_update_option)) },
+                text = { Text(stringResource(updateMenuOption)) },
                 onClick = {
                     onUpdateClick()
                     isExpanded.value = false
@@ -46,7 +52,7 @@ fun ReminderMenuButton(
             )
             HorizontalDivider()
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.reminder_menu_button_delete_option)) },
+                text = { Text(stringResource(deleteMenuOption)) },
                 onClick = {
                     onDeleteClick()
                     isExpanded.value = false

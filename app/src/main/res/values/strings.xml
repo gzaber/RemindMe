@@ -8,11 +8,13 @@
     <string name="empty_reminders_list_info">Reminders list is empty</string>
     <string name="info_icon_content_description">Info icon</string>
     <string name="fab_content_description">Floating action button</string>
+    <string name="reminder_list_item_icon_description">Date time icon</string>
     <string name="reminder_menu_button_icon_description">Reminder menu button</string>
     <string name="reminder_menu_button_update_option">Update</string>
     <string name="reminder_menu_button_delete_option">Delete</string>
     <string name="delete_reminder_dialog_title">Delete reminder</string>
     <string name="delete_reminder_dialog_text">Are you sure you want to delete the reminder?</string>
+    <string name="delete_reminder_dialog_icon_description">Delete reminder info icon</string>
     <string name="add_edit_app_bar_create_title">Create reminder</string>
     <string name="add_edit_app_bar_update_title">Update reminder</string>
     <string name="add_edit_name_title">Name</string>

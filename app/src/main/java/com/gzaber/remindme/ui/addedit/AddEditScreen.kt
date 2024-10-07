@@ -1,10 +1,7 @@
 package com.gzaber.remindme.ui.addedit
 
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -13,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.gzaber.remindme.R
 import com.gzaber.remindme.ui.addedit.composable.AddEditAppBar
@@ -35,13 +33,8 @@ fun AddEditScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             AddEditAppBar(
-                title = stringResource(title),
-                color = MaterialTheme.colorScheme.primaryContainer,
+                title = title,
                 isLoading = uiState.isLoading,
-                navigationIcon = Icons.Default.Close,
-                navigationIconDescription = stringResource(R.string.add_edit_close_icon_description),
-                saveIcon = Icons.Default.Check,
-                saveIconDescription = stringResource(R.string.add_edit_save_icon_description),
                 onNavigateBack = onNavigateBack,
                 onSave = viewModel::saveReminder
             )
@@ -49,6 +42,7 @@ fun AddEditScreen(
     )
     { contentPadding ->
         AddEditContent(
+            modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
             nameValue = uiState.name,
             dateValue = uiState.formattedDate,
@@ -62,8 +56,6 @@ fun AddEditScreen(
 
         if (uiState.showDatePicker) {
             DatePickerModal(
-                confirmButtonText = stringResource(R.string.confirm_button_text),
-                dismissButtonText = stringResource(R.string.dismiss_button_text),
                 initialDateMillis = uiState.expirationDateMillis,
                 onDateSelected = viewModel::onDateChanged,
                 onDismiss = viewModel::toggleShowingDatePicker
@@ -72,8 +64,6 @@ fun AddEditScreen(
 
         if (uiState.showTimePicker) {
             TimePickerModal(
-                confirmButtonText = stringResource(R.string.confirm_button_text),
-                dismissButtonText = stringResource(R.string.dismiss_button_text),
                 initialHour = uiState.expirationHour,
                 initialMinute = uiState.expirationMinute,
                 onConfirm = viewModel::onTimeChanged,
@@ -83,7 +73,6 @@ fun AddEditScreen(
 
         if (uiState.showAdvancePicker) {
             AdvancePickerModal(
-                title = stringResource(R.string.add_edit_advance_title),
                 advanceUnits = viewModel.advanceUnits.map { it.toString() },
                 advanceValues = viewModel.advanceValues,
                 selectedAdvanceUnit = uiState.advanceUnit.toString(),

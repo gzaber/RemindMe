@@ -2,6 +2,7 @@ package com.gzaber.remindme.ui.reminders.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -28,16 +29,17 @@ fun RemindersContent(
 
     if (reminders.isEmpty()) {
         EmptyListInfo(
-            contentPadding = contentPadding,
-            modifier = modifier
+            modifier = modifier.fillMaxSize(),
+            contentPadding = contentPadding
         )
     } else {
         LazyColumn(
-            contentPadding = contentPadding,
-            modifier = modifier.fillMaxSize()
+            modifier = modifier.fillMaxSize(),
+            contentPadding = contentPadding
         ) {
             items(reminders, key = { it.id }) { reminder ->
                 ReminderListItem(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     reminder = reminder,
                     onUpdateClick = { onUpdateReminder(reminder.id) },
                     onDeleteClick = {

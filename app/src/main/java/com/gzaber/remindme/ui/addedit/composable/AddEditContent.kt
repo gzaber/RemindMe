@@ -41,7 +41,7 @@ fun AddEditContent(
 
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
                 text = stringResource(R.string.add_edit_name_title),
@@ -57,24 +57,27 @@ fun AddEditContent(
             )
         }
         InputSelector(
-            title = stringResource(R.string.add_edit_date_title),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            title = R.string.add_edit_date_title,
             textValue = dateValue,
             icon = Icons.Default.DateRange,
-            iconDescriptionText = stringResource(R.string.add_edit_date_icon_description),
+            iconDescriptionText = R.string.add_edit_date_icon_description,
             onClick = onDateButtonClick
         )
         InputSelector(
-            title = stringResource(R.string.add_edit_time_title),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            title = R.string.add_edit_time_title,
             textValue = timeValue,
             icon = Icons.Default.Settings,
-            iconDescriptionText = stringResource(R.string.add_edit_time_icon_description),
+            iconDescriptionText = R.string.add_edit_time_icon_description,
             onClick = onTimeButtonClick
         )
         InputSelector(
-            title = stringResource(R.string.add_edit_advance_title),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            title = R.string.add_edit_advance_title,
             textValue = "$advanceValue ${stringResource(R.string.add_edit_advance_value_suffix)}",
             icon = Icons.Default.Notifications,
-            iconDescriptionText = stringResource(R.string.add_edit_advance_icon_description),
+            iconDescriptionText = R.string.add_edit_advance_icon_description,
             onClick = onAdvanceButtonClick
         )
     }
