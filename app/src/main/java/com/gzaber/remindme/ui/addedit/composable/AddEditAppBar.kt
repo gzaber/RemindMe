@@ -1,8 +1,8 @@
 package com.gzaber.remindme.ui.addedit.composable
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.gzaber.remindme.R
 
@@ -29,7 +30,7 @@ fun AddEditAppBar(
     modifier: Modifier = Modifier,
     navigationIcon: ImageVector = Icons.Default.Close,
     @StringRes navigationIconDescription: Int = R.string.add_edit_close_icon_description,
-    saveIcon: ImageVector = Icons.Default.Check,
+    @DrawableRes saveIcon: Int = R.drawable.save,
     @StringRes saveIconDescription: Int = R.string.add_edit_save_icon_description,
     color: Color = MaterialTheme.colorScheme.primaryContainer,
 ) {
@@ -51,7 +52,7 @@ fun AddEditAppBar(
                     CircularProgressIndicator()
                 } else {
                     Icon(
-                        saveIcon,
+                        painterResource(saveIcon),
                         contentDescription = stringResource(saveIconDescription)
                     )
                 }

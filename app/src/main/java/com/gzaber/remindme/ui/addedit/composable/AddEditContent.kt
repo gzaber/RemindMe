@@ -9,13 +9,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
@@ -68,7 +69,7 @@ fun AddEditContent(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             title = R.string.add_edit_time_title,
             textValue = timeValue,
-            icon = Icons.Default.Settings,
+            icon = ImageVector.vectorResource(R.drawable.schedule),
             iconDescriptionText = R.string.add_edit_time_icon_description,
             onClick = onTimeButtonClick
         )

@@ -1,15 +1,14 @@
 package com.gzaber.remindme.ui.reminders.composable
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.gzaber.remindme.R
@@ -20,7 +19,7 @@ fun DeleteReminderDialog(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector = Icons.Default.Info,
+    @DrawableRes icon: Int = R.drawable.warning,
     @StringRes iconDescription: Int = R.string.delete_reminder_dialog_icon_description,
     @StringRes title: Int = R.string.delete_reminder_dialog_title,
     @StringRes text: Int = R.string.delete_reminder_dialog_text,
@@ -31,7 +30,7 @@ fun DeleteReminderDialog(
         modifier = modifier,
         icon = {
             Icon(
-                icon,
+                painterResource(icon),
                 contentDescription = stringResource(iconDescription)
             )
         },
