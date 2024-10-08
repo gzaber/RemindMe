@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gzaber.remindme.ui.reminders.model.ExpirationStatus
 import com.gzaber.remindme.ui.reminders.model.UiReminder
 import com.gzaber.remindme.ui.theme.RemindMeTheme
 
@@ -40,7 +41,15 @@ fun RemindersContent(
             items(reminders, key = { it.id }) { reminder ->
                 ReminderListItem(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    reminder = reminder,
+                    name = reminder.name,
+                    expiration = reminder.formattedExpiration,
+                    color = when (reminder.expirationStatus) {
+                        ExpirationStatus.EXPIRED -> Color.DarkGray
+                        ExpirationStatus.WITHIN_DAY -> Color.Red
+                        ExpirationStatus.WITHIN_WEEK -> Color.Yellow
+                        ExpirationStatus.MORE -> Color.Green
+                    },
+                    isExpired = reminder.expirationStatus == ExpirationStatus.EXPIRED,
                     onUpdateClick = { onUpdateReminder(reminder.id) },
                     onDeleteClick = {
                         reminderId.intValue = reminder.id
@@ -71,26 +80,26 @@ private fun RemindersContentPreview() {
                 UiReminder(
                     id = 1,
                     name = "Do something 1",
-                    color = Color.LightGray,
-                    expiration = "2024-04-01 12:00"
+                    formattedExpiration = "2024-04-01 12:00",
+                    expirationStatus = ExpirationStatus.EXPIRED
                 ),
                 UiReminder(
                     id = 2,
                     name = "Do something 2",
-                    color = Color.Red,
-                    expiration = "2024-04-01 12:00"
+                    formattedExpiration = "2024-04-01 12:00",
+                    expirationStatus = ExpirationStatus.WITHIN_DAY
                 ),
                 UiReminder(
                     id = 3,
                     name = "Do something 3",
-                    color = Color.Green,
-                    expiration = "2024-04-01 12:00"
+                    formattedExpiration = "2024-04-01 12:00",
+                    expirationStatus = ExpirationStatus.WITHIN_WEEK
                 ),
                 UiReminder(
                     id = 4,
                     name = "Do something 4",
-                    color = Color.Yellow,
-                    expiration = "2024-04-01 12:00"
+                    formattedExpiration = "2024-04-01 12:00",
+                    expirationStatus = ExpirationStatus.MORE
                 ),
             ),
             onUpdateReminder = {},

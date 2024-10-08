@@ -24,15 +24,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
-import com.gzaber.remindme.ui.reminders.model.UiReminder
 import com.gzaber.remindme.ui.theme.RemindMeTheme
 
 @Composable
 fun ReminderListItem(
-    reminder: UiReminder,
+    name: String,
+    expiration: String,
+    color: Color,
+    isExpired: Boolean,
     onUpdateClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -52,7 +55,7 @@ fun ReminderListItem(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(8.dp)
-                    .background(reminder.color)
+                    .background(color)
             )
             Column(
                 modifier = Modifier
@@ -60,7 +63,8 @@ fun ReminderListItem(
                     .weight(1f)
             ) {
                 Text(
-                    text = reminder.name,
+                    text = name,
+                    textDecoration = if (isExpired) TextDecoration.LineThrough else TextDecoration.None,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
@@ -73,7 +77,8 @@ fun ReminderListItem(
                             .padding(end = 8.dp)
                     )
                     Text(
-                        text = reminder.expiration,
+                        text = expiration,
+                        textDecoration = if (isExpired) TextDecoration.LineThrough else TextDecoration.None,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -91,12 +96,10 @@ fun ReminderListItem(
 private fun ReminderListItemPreview() {
     RemindMeTheme {
         ReminderListItem(
-            reminder = UiReminder(
-                id = 1,
-                name = "Do something",
-                color = Color.Green,
-                expiration = "2024-04-01 12:00"
-            ),
+            name = "Do something",
+            color = Color.Green,
+            expiration = "2024-04-01 12:00",
+            isExpired = false,
             onUpdateClick = {},
             onDeleteClick = {}
         )
