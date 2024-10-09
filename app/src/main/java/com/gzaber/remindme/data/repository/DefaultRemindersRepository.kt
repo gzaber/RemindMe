@@ -5,14 +5,10 @@ import com.gzaber.remindme.data.repository.model.toEntity
 import com.gzaber.remindme.data.repository.model.toModel
 import com.gzaber.remindme.data.service.AlarmService
 import com.gzaber.remindme.data.source.RemindersDao
+import com.gzaber.remindme.shared.format
+import com.gzaber.remindme.shared.toMilliseconds
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.FormatStringsInDatetimeFormats
-import kotlinx.datetime.format.byUnicodePattern
-import kotlinx.datetime.toInstant
 
 class DefaultRemindersRepository(
     private val remindersDataSource: RemindersDao,
@@ -43,15 +39,10 @@ class DefaultRemindersRepository(
             }
         }
 
-    @OptIn(FormatStringsInDatetimeFormats::class)
     private fun setReminders(reminder: Reminder, id: Int? = null) {
-        val timeZone = TimeZone.currentSystemDefault()
-        val expirationMillis = reminder.expiration.toInstant(timeZone).toEpochMilliseconds()
-        val advanceMillis = reminder.advance.toInstant(timeZone).toEpochMilliseconds()
-        val formattedExpiration = reminder.expiration.format(
-            LocalDateTime.Format {
-                byUnicodePattern("yyyy-MM-dd HH:mm")
-            })
+        val expirationMillis = reminder.expiration.toMilliseconds()
+        val advanceMillis = reminder.advance.toMilliseconds()
+        val formattedExpiration = reminder.expiration.format()
 
         alarmService.schedule(
             id ?: reminder.id,

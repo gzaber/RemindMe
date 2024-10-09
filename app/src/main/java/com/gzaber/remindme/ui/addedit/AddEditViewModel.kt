@@ -7,6 +7,10 @@ import androidx.navigation.toRoute
 import com.gzaber.remindme.AddEdit
 import com.gzaber.remindme.data.repository.RemindersRepository
 import com.gzaber.remindme.data.repository.model.Reminder
+import com.gzaber.remindme.shared.atPresent
+import com.gzaber.remindme.shared.minus
+import com.gzaber.remindme.shared.toLocalDateTime
+import com.gzaber.remindme.shared.toMilliseconds
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -14,22 +18,15 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.DurationUnit
 
 data class AddEditUiState(
     val name: String = "",
-    val expirationDateMillis: Long = Clock.System.now().toEpochMilliseconds(),
-    val expirationHour: Int = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()).hour,
-    val expirationMinute: Int = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()).minute,
+    val expirationDateMillis: Long = Clock.atPresent().toMilliseconds(),
+    val expirationHour: Int = Clock.atPresent().hour,
+    val expirationMinute: Int = Clock.atPresent().minute,
     val advanceValue: Int = 1,
     val advanceUnit: DateTimeUnit = DateTimeUnit.DAY,
     val showDatePicker: Boolean = false,
@@ -41,8 +38,7 @@ data class AddEditUiState(
 ) {
     val formattedDate: String
         get() {
-            val expirationDate = Instant.fromEpochMilliseconds(expirationDateMillis)
-                .toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val expirationDate = expirationDateMillis.toLocalDateTime().date
             val formattedMonth =
                 expirationDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
             return "${expirationDate.dayOfMonth} $formattedMonth ${expirationDate.year}"
@@ -132,9 +128,7 @@ class AddEditViewModel(
 
     fun saveReminder() {
         _uiState.update { it.copy(isLoading = true) }
-        val timeZone = TimeZone.currentSystemDefault()
-        val expirationDate = Instant.fromEpochMilliseconds(_uiState.value.expirationDateMillis)
-            .toLocalDateTime(timeZone).date
+        val expirationDate = _uiState.value.expirationDateMillis.toLocalDateTime().date
         val expirationTime = LocalTime(
             hour = _uiState.value.expirationHour,
             minute = _uiState.value.expirationMinute
@@ -145,9 +139,7 @@ class AddEditViewModel(
             hours = if (_uiState.value.advanceUnit == DateTimeUnit.HOUR) _uiState.value.advanceValue else 0,
             minutes = if (_uiState.value.advanceUnit == DateTimeUnit.MINUTE) _uiState.value.advanceValue else 0,
         )
-        val advanceDateTime = expirationDateTime.toInstant(timeZone)
-            .minus(advanceDateTimePeriod, timeZone)
-            .toLocalDateTime(timeZone)
+        val advanceDateTime = expirationDateTime.minus(advanceDateTimePeriod)
 
         val reminder = Reminder(
             name = _uiState.value.name,
@@ -184,8 +176,7 @@ class AddEditViewModel(
 
                         it.copy(
                             name = reminder.name,
-                            expirationDateMillis = reminder.expiration.toInstant(TimeZone.currentSystemDefault())
-                                .toEpochMilliseconds(),
+                            expirationDateMillis = reminder.expiration.toMilliseconds(),
                             expirationHour = reminder.expiration.hour,
                             expirationMinute = reminder.expiration.minute,
                             advanceValue = advance.first,
@@ -204,8 +195,7 @@ class AddEditViewModel(
         expiration: LocalDateTime,
         advance: LocalDateTime
     ): Pair<Int, DateTimeUnit> {
-        val timeZone = TimeZone.currentSystemDefault()
-        val durationDifference = expiration.toInstant(timeZone).minus(advance.toInstant(timeZone))
+        val durationDifference = expiration.minus(advance)
         val advancePairs = listOf(
             Pair(durationDifference.inWholeMinutes, DurationUnit.MINUTES),
             Pair(durationDifference.inWholeHours, DurationUnit.HOURS),

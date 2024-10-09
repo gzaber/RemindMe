@@ -3,6 +3,9 @@ package com.gzaber.remindme.ui.reminders
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.remindme.data.repository.RemindersRepository
+import com.gzaber.remindme.shared.atPresent
+import com.gzaber.remindme.shared.format
+import com.gzaber.remindme.shared.minus
 import com.gzaber.remindme.ui.reminders.model.ExpirationStatus
 import com.gzaber.remindme.ui.reminders.model.UiReminder
 import com.gzaber.remindme.ui.reminders.model.toUiModel
@@ -13,12 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.FormatStringsInDatetimeFormats
-import kotlinx.datetime.format.byUnicodePattern
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 
 data class RemindersUiState(
     val reminders: List<UiReminder> = emptyList(),
@@ -48,7 +45,7 @@ class RemindersViewModel(
                             isError = false,
                             reminders = reminders.map { reminder ->
                                 reminder.toUiModel(
-                                    formattedExpiration = formatExpiration(reminder.expiration),
+                                    formattedExpiration = reminder.expiration.format(),
                                     expirationStatus = calculateExpirationStatus(reminder.expiration)
                                 )
                             }
@@ -70,18 +67,9 @@ class RemindersViewModel(
         }
     }
 
-    @OptIn(FormatStringsInDatetimeFormats::class)
-    private fun formatExpiration(expirationDateTime: LocalDateTime): String =
-        expirationDateTime.format(
-            LocalDateTime.Format {
-                byUnicodePattern("yyyy-MM-dd HH:mm")
-            })
-
     private fun calculateExpirationStatus(expirationDateTime: LocalDateTime): ExpirationStatus {
-        val timeZone = TimeZone.currentSystemDefault()
-        val today = Clock.System.now().toLocalDateTime(timeZone)
-        val durationDifference = expirationDateTime.toInstant(timeZone)
-            .minus(today.toInstant(timeZone))
+        val now = Clock.atPresent()
+        val durationDifference = expirationDateTime.minus(now)
         val expirationStatus = when {
             durationDifference.inWholeSeconds < 0 -> ExpirationStatus.EXPIRED
             durationDifference.inWholeDays in 0..1 -> ExpirationStatus.WITHIN_DAY
