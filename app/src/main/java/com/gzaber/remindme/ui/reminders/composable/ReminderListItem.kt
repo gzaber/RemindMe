@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,52 +41,49 @@ fun ReminderListItem(
     @DrawableRes icon: Int = R.drawable.calendar_clock,
     @StringRes iconDescription: Int = R.string.reminder_list_item_icon_description,
 ) {
-    ElevatedCard(modifier = modifier) {
-        Row(
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxHeight()
+                .width(8.dp)
+                .background(color)
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .weight(1f)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(8.dp)
-                    .background(color)
+            Text(
+                text = name,
+                textDecoration = if (isExpired) TextDecoration.LineThrough else TextDecoration.None,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
             )
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .weight(1f)
-            ) {
-                Text(
-                    text = name,
-                    textDecoration = if (isExpired) TextDecoration.LineThrough else TextDecoration.None,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 4.dp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painterResource(icon),
+                    contentDescription = stringResource(iconDescription),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 8.dp)
                 )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painterResource(icon),
-                        contentDescription = stringResource(iconDescription),
-                        modifier = Modifier
-                            .size(24.dp)
-                            .padding(end = 8.dp)
-                    )
-                    Text(
-                        text = expiration,
-                        textDecoration = if (isExpired) TextDecoration.LineThrough else TextDecoration.None,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+                Text(
+                    text = expiration,
+                    textDecoration = if (isExpired) TextDecoration.LineThrough else TextDecoration.None,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
-            ReminderMenuButton(
-                onUpdateClick = onUpdateClick,
-                onDeleteClick = onDeleteClick
-            )
         }
+        ReminderMenuButton(
+            onUpdateClick = onUpdateClick,
+            onDeleteClick = onDeleteClick
+        )
     }
 }
 

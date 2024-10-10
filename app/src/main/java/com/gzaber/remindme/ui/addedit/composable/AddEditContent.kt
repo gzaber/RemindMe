@@ -42,7 +42,7 @@ fun AddEditContent(
 
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Text(
                 text = stringResource(R.string.add_edit_name_title),
@@ -58,7 +58,7 @@ fun AddEditContent(
             )
         }
         InputSelector(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             title = R.string.add_edit_date_title,
             textValue = dateValue,
             icon = Icons.Default.DateRange,
@@ -66,7 +66,7 @@ fun AddEditContent(
             onClick = onDateButtonClick
         )
         InputSelector(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             title = R.string.add_edit_time_title,
             textValue = timeValue,
             icon = ImageVector.vectorResource(R.drawable.schedule),
@@ -74,7 +74,7 @@ fun AddEditContent(
             onClick = onTimeButtonClick
         )
         InputSelector(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             title = R.string.add_edit_advance_title,
             textValue = "$advanceValue ${stringResource(R.string.add_edit_advance_value_suffix)}",
             icon = Icons.Default.Notifications,
