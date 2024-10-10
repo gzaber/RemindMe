@@ -43,12 +43,14 @@ class RemindersViewModel(
                         it.copy(
                             isLoading = false,
                             isError = false,
-                            reminders = reminders.map { reminder ->
-                                reminder.toUiModel(
-                                    formattedExpiration = reminder.expiration.format(),
-                                    expirationStatus = calculateExpirationStatus(reminder.expiration)
-                                )
-                            }
+                            reminders = reminders
+                                .sortedBy { reminder -> reminder.expiration }
+                                .map { reminder ->
+                                    reminder.toUiModel(
+                                        formattedExpiration = reminder.expiration.format(),
+                                        expirationStatus = calculateExpirationStatus(reminder.expiration)
+                                    )
+                                }
                         )
                     }
                 }
@@ -72,8 +74,8 @@ class RemindersViewModel(
         val durationDifference = expirationDateTime.minus(now)
         val expirationStatus = when {
             durationDifference.inWholeSeconds < 0 -> ExpirationStatus.EXPIRED
-            durationDifference.inWholeDays in 0..1 -> ExpirationStatus.WITHIN_DAY
-            durationDifference.inWholeDays in 2..7 -> ExpirationStatus.WITHIN_WEEK
+            durationDifference.inWholeDays == 0L -> ExpirationStatus.WITHIN_DAY
+            durationDifference.inWholeDays in 1..<7 -> ExpirationStatus.WITHIN_WEEK
             else -> ExpirationStatus.MORE
         }
 
