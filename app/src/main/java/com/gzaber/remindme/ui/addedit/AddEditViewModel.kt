@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import com.gzaber.remindme.AddEdit
 import com.gzaber.remindme.data.repository.RemindersRepository
 import com.gzaber.remindme.data.repository.model.Reminder
-import com.gzaber.remindme.shared.atPresent
 import com.gzaber.remindme.shared.minus
 import com.gzaber.remindme.shared.toLocalDateTime
 import com.gzaber.remindme.shared.toMilliseconds
@@ -15,50 +14,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlin.time.DurationUnit
-
-data class AddEditUiState(
-    val name: String = "",
-    val expirationDateMillis: Long = Clock.atPresent().toMilliseconds(),
-    val expirationHour: Int = Clock.atPresent().hour,
-    val expirationMinute: Int = Clock.atPresent().minute,
-    val advanceValue: Int = 1,
-    val advanceUnit: DateTimeUnit = DateTimeUnit.DAY,
-    val showDatePicker: Boolean = false,
-    val showTimePicker: Boolean = false,
-    val showAdvancePicker: Boolean = false,
-    val isLoading: Boolean = false,
-    val isSaved: Boolean = false,
-    val isError: Boolean = false
-) {
-    val formattedDate: String
-        get() {
-            val expirationDate = expirationDateMillis.toLocalDateTime().date
-            val formattedMonth =
-                expirationDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
-            return "${expirationDate.dayOfMonth} $formattedMonth ${expirationDate.year}"
-        }
-
-    val formattedTime: String
-        get() {
-            val formattedHour = if (expirationHour < 10) "0$expirationHour" else "$expirationHour"
-            val formattedMinute =
-                if (expirationMinute < 10) "0$expirationMinute" else "$expirationMinute"
-            return "$formattedHour:$formattedMinute"
-        }
-
-    val formattedAdvance: String
-        get() {
-            val advanceUnitLowercase = advanceUnit.toString().lowercase()
-            val suffix = if (advanceValue > 1) "s" else ""
-            return "$advanceValue $advanceUnitLowercase$suffix"
-        }
-}
 
 class AddEditViewModel(
     private val remindersRepository: RemindersRepository,

@@ -7,7 +7,6 @@ import com.gzaber.remindme.shared.atPresent
 import com.gzaber.remindme.shared.format
 import com.gzaber.remindme.shared.minus
 import com.gzaber.remindme.ui.reminders.model.ExpirationStatus
-import com.gzaber.remindme.ui.reminders.model.UiReminder
 import com.gzaber.remindme.ui.reminders.model.toUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,12 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-
-data class RemindersUiState(
-    val reminders: List<UiReminder> = emptyList(),
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-)
 
 class RemindersViewModel(
     private val remindersRepository: RemindersRepository
