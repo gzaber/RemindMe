@@ -45,10 +45,10 @@ fun RemindersContent(
                     name = reminder.name,
                     expiration = reminder.formattedExpiration,
                     color = when (reminder.expirationStatus) {
-                        ExpirationStatus.EXPIRED -> Color.DarkGray
-                        ExpirationStatus.WITHIN_DAY -> Color.Red
-                        ExpirationStatus.WITHIN_WEEK -> Color.Yellow
-                        ExpirationStatus.MORE -> Color.Green
+                        ExpirationStatus.EXPIRED -> Color(0xFF9E9E9E)
+                        ExpirationStatus.WITHIN_DAY -> Color(0xFFF44336)
+                        ExpirationStatus.WITHIN_WEEK -> Color(0xFFFF9800)
+                        ExpirationStatus.MORE -> Color(0xFF4CAF50)
                     },
                     isExpired = reminder.expirationStatus == ExpirationStatus.EXPIRED,
                     onUpdateClick = { onUpdateReminder(reminder.id) },
