@@ -131,7 +131,7 @@ class AddEditViewModel(
             try {
                 remindersRepository.read(id).let { reminder ->
                     _uiState.update {
-                        val advance =
+                        val (advanceValue, advanceUnit) =
                             calculateAdvanceValueAndUnit(reminder.expiration, reminder.advance)
 
                         it.copy(
@@ -139,8 +139,8 @@ class AddEditViewModel(
                             expirationDateMillis = reminder.expiration.toMilliseconds(),
                             expirationHour = reminder.expiration.hour,
                             expirationMinute = reminder.expiration.minute,
-                            advanceValue = advance.first,
-                            advanceUnit = advance.second,
+                            advanceValue = advanceValue,
+                            advanceUnit = advanceUnit,
                             isLoading = false
                         )
                     }
