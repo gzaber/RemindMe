@@ -7,9 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,9 +25,6 @@ fun RemindersContent(
     onDeleteReminder: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val showDeleteDialog = remember { mutableStateOf(false) }
-    val reminderId = remember { mutableIntStateOf(0) }
-
     if (reminders.isEmpty()) {
         EmptyListInfo(
             modifier = modifier.fillMaxSize(),
@@ -56,24 +50,11 @@ fun RemindersContent(
                     },
                     isExpired = reminder.expirationStatus == ExpirationStatus.EXPIRED,
                     onUpdateClick = { onUpdateReminder(reminder.id) },
-                    onDeleteClick = {
-                        reminderId.intValue = reminder.id
-                        showDeleteDialog.value = true
-                    }
+                    onDeleteClick = { onDeleteReminder(reminder.id) }
                 )
                 HorizontalDivider()
             }
         }
-    }
-
-    if (showDeleteDialog.value) {
-        DeleteReminderDialog(
-            onConfirmation = {
-                onDeleteReminder(reminderId.intValue)
-                showDeleteDialog.value = false
-            },
-            onDismissRequest = { showDeleteDialog.value = false }
-        )
     }
 }
 

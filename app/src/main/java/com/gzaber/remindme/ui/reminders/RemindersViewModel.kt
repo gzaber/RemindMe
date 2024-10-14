@@ -24,6 +24,34 @@ class RemindersViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
+        observeReminders()
+    }
+
+    fun toggleShowDeleteDialog() {
+        _uiState.update {
+            it.copy(showDeleteDialog = !_uiState.value.showDeleteDialog)
+        }
+    }
+
+    fun onReminderIdChanged(id: Int) {
+        _uiState.update {
+            it.copy(reminderIdToDelete = id)
+        }
+    }
+
+    fun deleteReminder() {
+        viewModelScope.launch {
+            try {
+                remindersRepository.delete(_uiState.value.reminderIdToDelete)
+            } catch (e: Throwable) {
+                _uiState.update {
+                    it.copy(isError = true)
+                }
+            }
+        }
+    }
+
+    private fun observeReminders() {
         viewModelScope.launch {
             remindersRepository.observeAll()
                 .catch { _ ->
@@ -47,18 +75,6 @@ class RemindersViewModel(
                         )
                     }
                 }
-        }
-    }
-
-    fun deleteReminder(id: Int) {
-        viewModelScope.launch {
-            try {
-                remindersRepository.delete(id)
-            } catch (e: Throwable) {
-                _uiState.update {
-                    it.copy(isError = true)
-                }
-            }
         }
     }
 
