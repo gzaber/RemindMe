@@ -1,22 +1,19 @@
 package com.gzaber.remindme.data.source
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.Instant
+import com.gzaber.remindme.shared.toLocalDateTime
+import com.gzaber.remindme.shared.toMilliseconds
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 
 class Converters {
-    private val timeZone = TimeZone.currentSystemDefault()
 
     @TypeConverter
     fun fromTimestamp(value: Long): LocalDateTime {
-        return Instant.fromEpochMilliseconds(value).toLocalDateTime(timeZone)
+        return value.toLocalDateTime()
     }
 
     @TypeConverter
     fun toTimestamp(dateTime: LocalDateTime): Long {
-        return dateTime.toInstant(timeZone).toEpochMilliseconds()
+        return dateTime.toMilliseconds()
     }
 }

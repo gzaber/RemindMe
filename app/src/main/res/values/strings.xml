@@ -1,11 +1,20 @@
 <resources>
     <string name="app_name">RemindMe</string>
+    <string name="notification_channel_name">Notification channel</string>
     <string name="error_message">Something went wrong</string>
     <string name="confirm_button_text">OK</string>
     <string name="dismiss_button_text">Dismiss</string>
+    <string name="close_button_text">Close</string>
     <string name="empty_reminders_list_info">Reminders list is empty</string>
     <string name="info_icon_content_description">Info icon</string>
     <string name="fab_content_description">Floating action button</string>
+    <string name="reminder_list_item_icon_description">Date time icon</string>
+    <string name="reminder_menu_button_icon_description">Reminder menu button</string>
+    <string name="reminder_menu_button_update_option">Update</string>
+    <string name="reminder_menu_button_delete_option">Delete</string>
+    <string name="delete_reminder_dialog_title">Delete reminder</string>
+    <string name="delete_reminder_dialog_text">Are you sure you want to delete the reminder?</string>
+    <string name="delete_reminder_dialog_icon_description">Delete reminder info icon</string>
     <string name="add_edit_app_bar_create_title">Create reminder</string>
     <string name="add_edit_app_bar_update_title">Update reminder</string>
     <string name="add_edit_name_title">Name</string>
@@ -14,9 +23,10 @@
     <string name="add_edit_advance_title">Advance</string>
     <string name="add_edit_advance_value_suffix">before</string>
     <string name="add_edit_name_placeholder">Something to remind</string>
-    <string name="add_edit_date_icon_description">Date button</string>
-    <string name="add_edit_time_icon_description">Time button</string>
-    <string name="add_edit_advance_icon_description">Advance button</string>
+    <string name="add_edit_date_icon_description">Date selector</string>
+    <string name="add_edit_time_icon_description">Time selector</string>
+    <string name="add_edit_advance_icon_description">Advance selector</string>
     <string name="add_edit_save_icon_description">Save reminder button</string>
+    <string name="add_edit_close_icon_description">Close screen button</string>
 
 </resources>

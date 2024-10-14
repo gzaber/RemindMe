@@ -1,5 +1,6 @@
 package com.gzaber.remindme.ui.addedit.composable
 
+import androidx.annotation.StringRes
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -8,17 +9,19 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.gzaber.remindme.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerModal(
-    confirmButtonText: String,
-    dismissButtonText: String,
     initialHour: Int,
     initialMinute: Int,
     onConfirm: (Int, Int) -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @StringRes confirmButtonText: Int = R.string.confirm_button_text,
+    @StringRes dismissButtonText: Int = R.string.dismiss_button_text,
 ) {
     val timePickerState = rememberTimePickerState(
         initialHour = initialHour,
@@ -33,12 +36,12 @@ fun TimePickerModal(
                 onConfirm(timePickerState.hour, timePickerState.minute)
                 onDismiss()
             }) {
-                Text(confirmButtonText)
+                Text(text = stringResource(confirmButtonText))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(dismissButtonText)
+                Text(text = stringResource(dismissButtonText))
             }
         },
         text = { TimePicker(state = timePickerState) },

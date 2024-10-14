@@ -1,16 +1,17 @@
 package com.gzaber.remindme.ui.addedit.composable
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -18,27 +19,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gzaber.remindme.R
 import com.gzaber.remindme.ui.theme.RemindMeTheme
 
 @Composable
 fun InputSelector(
-    title: String,
+    @StringRes title: Int,
     textValue: String,
+    icon: ImageVector,
+    @StringRes iconDescriptionText: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    trailing: @Composable (() -> Unit),
 ) {
-    Column(modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+    Column(modifier = modifier) {
         Text(
-            text = title,
+            text = stringResource(title),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onClick() }
         ) {
             Text(
                 text = textValue,
@@ -54,7 +62,11 @@ fun InputSelector(
                     .padding(16.dp)
                     .weight(1f)
             )
-            trailing()
+            Icon(
+                icon,
+                contentDescription = stringResource(iconDescriptionText),
+                modifier = Modifier.padding(start = 8.dp)
+            )
         }
     }
 }
@@ -64,16 +76,11 @@ fun InputSelector(
 private fun InputSelectorPreview() {
     RemindMeTheme {
         InputSelector(
-            title = "Title",
+            title = R.string.add_edit_date_title,
             textValue = "Some title",
-            trailing = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        Icons.Default.Notifications,
-                        contentDescription = "Icon content description"
-                    )
-                }
-            }
+            icon = Icons.Default.DateRange,
+            iconDescriptionText = R.string.add_edit_date_icon_description,
+            onClick = {}
         )
     }
 }

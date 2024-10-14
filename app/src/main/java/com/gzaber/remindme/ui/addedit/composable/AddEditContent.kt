@@ -9,15 +9,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
@@ -59,38 +58,29 @@ fun AddEditContent(
             )
         }
         InputSelector(
-            title = stringResource(R.string.add_edit_date_title),
-            textValue = dateValue
-        ) {
-            IconButton(onClick = onDateButtonClick) {
-                Icon(
-                    Icons.Default.DateRange,
-                    contentDescription = stringResource(R.string.add_edit_date_icon_description)
-                )
-            }
-        }
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            title = R.string.add_edit_date_title,
+            textValue = dateValue,
+            icon = Icons.Default.DateRange,
+            iconDescriptionText = R.string.add_edit_date_icon_description,
+            onClick = onDateButtonClick
+        )
         InputSelector(
-            title = stringResource(R.string.add_edit_time_title),
-            textValue = timeValue
-        ) {
-            IconButton(onClick = onTimeButtonClick) {
-                Icon(
-                    Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.add_edit_time_icon_description)
-                )
-            }
-        }
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            title = R.string.add_edit_time_title,
+            textValue = timeValue,
+            icon = ImageVector.vectorResource(R.drawable.schedule),
+            iconDescriptionText = R.string.add_edit_time_icon_description,
+            onClick = onTimeButtonClick
+        )
         InputSelector(
-            title = stringResource(R.string.add_edit_advance_title),
-            textValue = "$advanceValue ${stringResource(R.string.add_edit_advance_value_suffix)}"
-        ) {
-            IconButton(onClick = onAdvanceButtonClick) {
-                Icon(
-                    Icons.Default.Notifications,
-                    contentDescription = stringResource(R.string.add_edit_advance_icon_description)
-                )
-            }
-        }
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            title = R.string.add_edit_advance_title,
+            textValue = "$advanceValue ${stringResource(R.string.add_edit_advance_value_suffix)}",
+            icon = Icons.Default.Notifications,
+            iconDescriptionText = R.string.add_edit_advance_icon_description,
+            onClick = onAdvanceButtonClick
+        )
     }
 }
 

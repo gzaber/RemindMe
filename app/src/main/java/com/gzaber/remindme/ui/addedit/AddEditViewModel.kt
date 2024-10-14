@@ -3,77 +3,36 @@ package com.gzaber.remindme.ui.addedit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.gzaber.remindme.AddEdit
 import com.gzaber.remindme.data.repository.RemindersRepository
 import com.gzaber.remindme.data.repository.model.Reminder
+import com.gzaber.remindme.shared.minus
+import com.gzaber.remindme.shared.toLocalDateTime
+import com.gzaber.remindme.shared.toMilliseconds
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlin.time.DurationUnit
-
-data class AddEditUiState(
-    val name: String = "",
-    val expirationDateMillis: Long = Clock.System.now().toEpochMilliseconds(),
-    val expirationHour: Int = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()).hour,
-    val expirationMinute: Int = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()).minute,
-    val advanceValue: Int = 1,
-    val advanceUnit: DateTimeUnit = DateTimeUnit.DAY,
-    val showDatePicker: Boolean = false,
-    val showTimePicker: Boolean = false,
-    val showAdvancePicker: Boolean = false,
-    val isLoading: Boolean = false,
-    val isError: Boolean = false
-) {
-    val formattedDate: String
-        get() {
-            val expirationDate = Instant.fromEpochMilliseconds(expirationDateMillis)
-                .toLocalDateTime(TimeZone.currentSystemDefault()).date
-            val formattedMonth =
-                expirationDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
-            return "${expirationDate.dayOfMonth} $formattedMonth ${expirationDate.year}"
-        }
-
-    val formattedTime: String
-        get() {
-            val formattedHour = if (expirationHour < 10) "0$expirationHour" else "$expirationHour"
-            val formattedMinute =
-                if (expirationMinute < 10) "0$expirationMinute" else "$expirationMinute"
-            return "$formattedHour:$formattedMinute"
-        }
-
-    val formattedAdvance: String
-        get() {
-            val advanceUnitLowercase = advanceUnit.toString().lowercase()
-            val suffix = if (advanceValue > 1) "s" else ""
-            return "$advanceValue $advanceUnitLowercase$suffix"
-        }
-}
 
 class AddEditViewModel(
     private val remindersRepository: RemindersRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _reminderId: Int? = savedStateHandle["REMINDER_ID"]
+    private val _reminderId: Int? = savedStateHandle.toRoute<AddEdit>().id
     private val _uiState = MutableStateFlow(AddEditUiState())
     val uiState = _uiState.asStateFlow()
     val advanceUnits = listOf(DateTimeUnit.MINUTE, DateTimeUnit.HOUR, DateTimeUnit.DAY)
     val advanceValues = (1..30).toList()
 
     init {
-        if (_reminderId != null) {
-            readReminder(_reminderId)
-        }
+        if (_reminderId != null) readReminder(_reminderId)
     }
 
     fun onNameChanged(name: String) {
@@ -88,6 +47,7 @@ class AddEditViewModel(
                 it.copy(expirationDateMillis = dateMillis)
             }
         }
+
     }
 
     fun onTimeChanged(hour: Int, minute: Int) {
@@ -127,19 +87,24 @@ class AddEditViewModel(
     }
 
     fun saveReminder() {
-        _uiState.update {
-            it.copy(isLoading = true)
-        }
-        val expirationDateTime = Instant.fromEpochMilliseconds(_uiState.value.expirationDateMillis)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
+        _uiState.update { it.copy(isLoading = true) }
+        val expirationDate = _uiState.value.expirationDateMillis.toLocalDateTime().date
+        val expirationTime = LocalTime(
+            hour = _uiState.value.expirationHour,
+            minute = _uiState.value.expirationMinute
+        )
+        val expirationDateTime = LocalDateTime(expirationDate, expirationTime)
+        val advanceDateTimePeriod = DateTimePeriod(
+            days = if (_uiState.value.advanceUnit == DateTimeUnit.DAY) _uiState.value.advanceValue else 0,
+            hours = if (_uiState.value.advanceUnit == DateTimeUnit.HOUR) _uiState.value.advanceValue else 0,
+            minutes = if (_uiState.value.advanceUnit == DateTimeUnit.MINUTE) _uiState.value.advanceValue else 0,
+        )
+        val advanceDateTime = expirationDateTime.minus(advanceDateTimePeriod)
+
         val reminder = Reminder(
             name = _uiState.value.name,
             expiration = expirationDateTime,
-            advance = calculateAdvanceDateTime(
-                _uiState.value.advanceValue,
-                _uiState.value.advanceUnit,
-                _uiState.value.expirationDateMillis
-            )
+            advance = advanceDateTime
         )
 
         viewModelScope.launch {
@@ -149,6 +114,7 @@ class AddEditViewModel(
                 } else {
                     remindersRepository.update(reminder.copy(id = _reminderId))
                 }
+                _uiState.update { it.copy(isSaved = true) }
             } catch (e: Throwable) {
                 _uiState.update {
                     it.copy(
@@ -157,42 +123,31 @@ class AddEditViewModel(
                     )
                 }
             }
-
         }
     }
 
     private fun readReminder(id: Int) {
-        _uiState.update {
-            it.copy(isLoading = true)
-        }
         viewModelScope.launch {
             try {
                 remindersRepository.read(id).let { reminder ->
                     _uiState.update {
-                        val advance =
+                        val (advanceValue, advanceUnit) =
                             calculateAdvanceValueAndUnit(reminder.expiration, reminder.advance)
 
                         it.copy(
                             name = reminder.name,
-                            expirationDateMillis = reminder.expiration.toInstant(TimeZone.currentSystemDefault())
-                                .toEpochMilliseconds(),
+                            expirationDateMillis = reminder.expiration.toMilliseconds(),
                             expirationHour = reminder.expiration.hour,
                             expirationMinute = reminder.expiration.minute,
-                            advanceValue = advance.first,
-                            advanceUnit = advance.second,
+                            advanceValue = advanceValue,
+                            advanceUnit = advanceUnit,
                             isLoading = false
                         )
                     }
                 }
             } catch (e: Throwable) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isError = true
-                    )
-                }
+                _uiState.update { it.copy(isError = true) }
             }
-
         }
     }
 
@@ -200,14 +155,13 @@ class AddEditViewModel(
         expiration: LocalDateTime,
         advance: LocalDateTime
     ): Pair<Int, DateTimeUnit> {
-        val timeZone = TimeZone.currentSystemDefault()
-        val durationDifference = expiration.toInstant(timeZone).minus(advance.toInstant(timeZone))
+        val durationDifference = expiration.minus(advance)
         val advancePairs = listOf(
             Pair(durationDifference.inWholeMinutes, DurationUnit.MINUTES),
             Pair(durationDifference.inWholeHours, DurationUnit.HOURS),
             Pair(durationDifference.inWholeDays, DurationUnit.DAYS)
         )
-        val min = advancePairs.minBy { it.first }
+        val min = advancePairs.filter { it.first > 0 }.minBy { it.first }
         val advanceValue = min.first.toInt()
         val advanceUnit = when (min.second) {
             DurationUnit.MINUTES -> DateTimeUnit.MINUTE
@@ -217,19 +171,4 @@ class AddEditViewModel(
 
         return Pair(advanceValue, advanceUnit)
     }
-
-    private fun calculateAdvanceDateTime(
-        advanceValue: Int,
-        advanceUnit: DateTimeUnit,
-        expirationMillis: Long
-    ): LocalDateTime {
-        val timeZone = TimeZone.currentSystemDefault()
-        val advance = Instant.fromEpochMilliseconds(expirationMillis)
-            .minus(advanceValue, advanceUnit, timeZone)
-            .toLocalDateTime(timeZone)
-
-        return advance
-    }
-
-
 }
