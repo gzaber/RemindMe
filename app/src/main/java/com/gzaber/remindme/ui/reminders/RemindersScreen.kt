@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
 import com.gzaber.remindme.ui.reminders.composable.DeleteReminderDialog
 import com.gzaber.remindme.ui.reminders.composable.LoadingBox
@@ -52,7 +51,6 @@ fun RemindersScreen(
                 modifier = Modifier.fillMaxSize(),
                 reminders = uiState.reminders,
                 contentPadding = contentPadding,
-                listBottomPadding = 0.dp,
                 onUpdateReminder = onNavigateToAddEdit,
                 onDeleteReminder = {
                     viewModel.onReminderIdChanged(it)

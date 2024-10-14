@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.ui.reminders.model.ExpirationStatus
 import com.gzaber.remindme.ui.reminders.model.UiReminder
@@ -20,7 +19,6 @@ import com.gzaber.remindme.ui.theme.RemindMeTheme
 fun RemindersContent(
     reminders: List<UiReminder>,
     contentPadding: PaddingValues,
-    listBottomPadding: Dp,
     onUpdateReminder: (Int) -> Unit,
     onDeleteReminder: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -32,9 +30,7 @@ fun RemindersContent(
         )
     } else {
         LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(bottom = listBottomPadding),
+            modifier = modifier.fillMaxSize(),
             contentPadding = contentPadding
         ) {
             items(reminders, key = { it.id }) { reminder ->
@@ -91,8 +87,7 @@ private fun RemindersContentPreview() {
             ),
             onUpdateReminder = {},
             onDeleteReminder = {},
-            contentPadding = PaddingValues(0.dp),
-            listBottomPadding = 0.dp
+            contentPadding = PaddingValues(0.dp)
         )
     }
 }
@@ -105,8 +100,7 @@ private fun RemindersContentEmptyListPreview() {
             reminders = emptyList(),
             onUpdateReminder = {},
             onDeleteReminder = {},
-            contentPadding = PaddingValues(0.dp),
-            listBottomPadding = 0.dp
+            contentPadding = PaddingValues(0.dp)
         )
     }
 }
