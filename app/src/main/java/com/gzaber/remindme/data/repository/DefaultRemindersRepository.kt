@@ -28,6 +28,7 @@ class DefaultRemindersRepository(
     override suspend fun delete(id: Int) {
         remindersDataSource.delete(id)
         alarmService.delete(id)
+        alarmService.delete(id.unaryMinus())
     }
 
     override suspend fun read(id: Int) = remindersDataSource.read(id).toModel()
@@ -51,7 +52,7 @@ class DefaultRemindersRepository(
             expirationMillis
         )
         alarmService.schedule(
-            id?.unaryMinus() ?: reminder.id,
+            (id ?: reminder.id).unaryMinus(),
             reminder.name,
             formattedExpiration,
             advanceMillis
