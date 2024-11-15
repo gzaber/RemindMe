@@ -14,7 +14,6 @@ import com.gzaber.remindme.R
 import com.gzaber.remindme.helper.RobolectricTestActivity
 import com.gzaber.remindme.ui.reminders.model.ExpirationStatus
 import com.gzaber.remindme.ui.reminders.model.UiReminder
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -46,20 +45,18 @@ class RemindersContentTest {
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()
 
-    @Before
-    fun setUp() {
-        composeTestRule.setContent {
-            RemindersContent(
-                reminders = uiReminders,
-                onUpdateReminder = {},
-                onDeleteReminder = {},
-                contentPadding = PaddingValues(0.dp)
-            )
-        }
+    @Test
+    fun emptyListOfReminders_displaysEmptyListInfo() {
+        setUpRemindersContent(reminders = listOf())
+
+        composeTestRule.onNodeWithText(context.getString(R.string.empty_reminders_list_info))
+            .assertIsDisplayed()
     }
 
     @Test
     fun names_areDisplayed() {
+        setUpRemindersContent()
+
         with(composeTestRule) {
             onNodeWithText("reminder1").assertIsDisplayed()
             onNodeWithText("reminder2").assertIsDisplayed()
@@ -68,6 +65,8 @@ class RemindersContentTest {
 
     @Test
     fun expirationDates_areDisplayed() {
+        setUpRemindersContent()
+
         with(composeTestRule) {
             onNodeWithText("2024").assertIsDisplayed()
             onNodeWithText("2025").assertIsDisplayed()
@@ -76,6 +75,8 @@ class RemindersContentTest {
 
     @Test
     fun expirationDateIcons_areDisplayed() {
+        setUpRemindersContent()
+
         with(composeTestRule) {
             onAllNodesWithContentDescription(context.getString(R.string.reminder_list_item_icon_description))
                 .assertCountEquals(2).onFirst().assertIsDisplayed()
@@ -86,11 +87,24 @@ class RemindersContentTest {
 
     @Test
     fun menuButtons_canBeClicked() {
+        setUpRemindersContent()
+
         with(composeTestRule) {
             onAllNodesWithContentDescription(context.getString(R.string.reminder_menu_button_icon_description))
                 .assertCountEquals(2).onFirst().assertHasClickAction()
             onAllNodesWithContentDescription(context.getString(R.string.reminder_menu_button_icon_description))
                 .assertCountEquals(2).onLast().assertHasClickAction()
+        }
+    }
+
+    private fun setUpRemindersContent(reminders: List<UiReminder> = uiReminders) {
+        composeTestRule.setContent {
+            RemindersContent(
+                reminders = reminders,
+                onUpdateReminder = {},
+                onDeleteReminder = {},
+                contentPadding = PaddingValues(0.dp)
+            )
         }
     }
 }
