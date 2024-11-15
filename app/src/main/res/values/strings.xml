@@ -8,6 +8,7 @@
     <string name="empty_reminders_list_info">Reminders list is empty</string>
     <string name="info_icon_content_description">Info icon</string>
     <string name="fab_content_description">Floating action button</string>
+    <string name="loading_indicator_content_description">Loading indicator</string>
     <string name="reminder_list_item_icon_description">Date time icon</string>
     <string name="reminder_menu_button_icon_description">Reminder menu button</string>
     <string name="reminder_menu_button_update_option">Update</string>

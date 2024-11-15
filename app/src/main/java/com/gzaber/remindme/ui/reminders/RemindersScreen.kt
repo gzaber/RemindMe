@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.gzaber.remindme.R
 import com.gzaber.remindme.ui.reminders.composable.DeleteReminderDialog
-import com.gzaber.remindme.ui.reminders.composable.LoadingBox
+import com.gzaber.remindme.ui.reminders.composable.LoadingIndicator
 import com.gzaber.remindme.ui.reminders.composable.RemindersAppBar
 import com.gzaber.remindme.ui.reminders.composable.RemindersContent
 import com.gzaber.remindme.ui.reminders.composable.RemindersFloatingActionButton
@@ -42,7 +42,7 @@ fun RemindersScreen(
     )
     { contentPadding ->
         if (uiState.isLoading) {
-            LoadingBox(
+            LoadingIndicator(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = contentPadding
             )
