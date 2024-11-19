@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.gzaber.remindme.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,6 +34,7 @@ fun AddEditAppBar(
     @StringRes navigationIconDescription: Int = R.string.add_edit_close_icon_description,
     @DrawableRes saveIcon: Int = R.drawable.save,
     @StringRes saveIconDescription: Int = R.string.add_edit_save_icon_description,
+    @StringRes indicatorDescription: Int = R.string.loading_indicator_content_description,
     color: Color = MaterialTheme.colorScheme.primaryContainer,
 ) {
     CenterAlignedTopAppBar(
@@ -49,7 +52,12 @@ fun AddEditAppBar(
         actions = {
             IconButton(onClick = onSave) {
                 if (isLoading) {
-                    CircularProgressIndicator()
+                    val indicatorContentDescription = stringResource(indicatorDescription)
+                    CircularProgressIndicator(
+                        modifier = Modifier.semantics {
+                            contentDescription = indicatorContentDescription
+                        }
+                    )
                 } else {
                     Icon(
                         painterResource(saveIcon),
