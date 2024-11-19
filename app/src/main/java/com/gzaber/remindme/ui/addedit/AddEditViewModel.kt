@@ -3,7 +3,6 @@ package com.gzaber.remindme.ui.addedit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.gzaber.remindme.AddEdit
 import com.gzaber.remindme.data.repository.RemindersRepository
 import com.gzaber.remindme.data.repository.model.Reminder
@@ -25,7 +24,7 @@ class AddEditViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _reminderId: Int? = savedStateHandle.toRoute<AddEdit>().id
+    private val _reminderId: Int? = savedStateHandle[AddEdit.ID_ARG]
     private val _uiState = MutableStateFlow(AddEditUiState())
     val uiState = _uiState.asStateFlow()
     val advanceUnits = listOf(DateTimeUnit.MINUTE, DateTimeUnit.HOUR, DateTimeUnit.DAY)
