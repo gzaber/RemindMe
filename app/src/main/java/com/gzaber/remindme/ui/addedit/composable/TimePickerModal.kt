@@ -10,6 +10,8 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.gzaber.remindme.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,13 +25,17 @@ fun TimePickerModal(
     @StringRes confirmButtonText: Int = R.string.confirm_button_text,
     @StringRes dismissButtonText: Int = R.string.dismiss_button_text,
 ) {
+    val timePickerModalDescription = stringResource(R.string.time_picker_modal_content_description)
+    val timePickerDescription = stringResource(R.string.time_picker_content_description)
     val timePickerState = rememberTimePickerState(
         initialHour = initialHour,
         initialMinute = initialMinute,
         is24Hour = true
     )
 
+
     AlertDialog(
+        modifier = modifier.semantics { contentDescription = timePickerModalDescription },
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
@@ -44,7 +50,10 @@ fun TimePickerModal(
                 Text(text = stringResource(dismissButtonText))
             }
         },
-        text = { TimePicker(state = timePickerState) },
-        modifier = modifier
+        text = {
+            TimePicker(
+                state = timePickerState,
+                modifier = Modifier.semantics { contentDescription = timePickerDescription })
+        }
     )
 }

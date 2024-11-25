@@ -2,6 +2,7 @@ package com.gzaber.remindme.ui.addedit.composable
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.gzaber.remindme.R
@@ -36,6 +37,12 @@ class DatePickerModalTest {
                 onDismiss = { isDismissButtonClicked = true }
             )
         }
+    }
+
+    @Test
+    fun datePicker_isDisplayed() {
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.date_picker_content_description))
+            .assertIsDisplayed()
     }
 
     @Test
