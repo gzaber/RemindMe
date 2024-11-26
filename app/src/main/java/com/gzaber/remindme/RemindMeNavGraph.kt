@@ -15,7 +15,11 @@ import kotlinx.serialization.Serializable
 object Reminders
 
 @Serializable
-data class AddEdit(val id: Int? = null)
+data class AddEdit(val id: Int? = null) {
+    companion object {
+        const val ID_ARG = "id"
+    }
+}
 
 @Composable
 fun RemindMeNavGraph(

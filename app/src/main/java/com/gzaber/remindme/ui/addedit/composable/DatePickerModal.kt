@@ -10,6 +10,8 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.gzaber.remindme.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,12 +24,14 @@ fun DatePickerModal(
     @StringRes confirmButtonText: Int = R.string.confirm_button_text,
     @StringRes dismissButtonText: Int = R.string.dismiss_button_text,
 ) {
+    val datePickerModalDescription = stringResource(R.string.date_picker_modal_content_description)
+    val datePickerDescription = stringResource(R.string.date_picker_content_description)
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = initialDateMillis
     )
 
     DatePickerDialog(
-        modifier = modifier,
+        modifier = modifier.semantics { contentDescription = datePickerModalDescription },
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
@@ -44,6 +48,8 @@ fun DatePickerModal(
             }
         }
     ) {
-        DatePicker(state = datePickerState)
+        DatePicker(
+            state = datePickerState,
+            modifier = Modifier.semantics { contentDescription = datePickerDescription })
     }
 }

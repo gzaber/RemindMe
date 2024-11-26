@@ -28,6 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
 
@@ -45,8 +47,11 @@ fun AdvancePickerModal(
     @StringRes title: Int = R.string.add_edit_advance_title,
     @StringRes closeButtonText: Int = R.string.close_button_text
 ) {
+    val advancePickerModalDescription =
+        stringResource(R.string.advance_picker_modal_content_description)
+
     ModalBottomSheet(
-        modifier = modifier,
+        modifier = modifier.semantics { contentDescription = advancePickerModalDescription },
         onDismissRequest = onDismiss
     ) {
         Column(
