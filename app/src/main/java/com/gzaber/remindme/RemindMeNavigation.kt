@@ -22,7 +22,7 @@ data class AddEdit(val id: Int? = null) {
 }
 
 @Composable
-fun RemindMeNavGraph(
+fun RemindMeNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
