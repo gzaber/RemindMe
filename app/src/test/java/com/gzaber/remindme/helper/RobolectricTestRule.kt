@@ -6,10 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.test.core.app.ApplicationProvider
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
-import org.koin.core.context.stopKoin
 import org.robolectric.Shadows
 
-class RobolectricTestActivity: TestWatcher() {
+class RobolectricTestRule : TestWatcher() {
     override fun starting(description: Description?) {
         super.starting(description)
         val appContext: Application = ApplicationProvider.getApplicationContext()
@@ -18,6 +17,5 @@ class RobolectricTestActivity: TestWatcher() {
             packageName = appContext.packageName
         }
         Shadows.shadowOf(appContext.packageManager).addOrUpdateActivity(activityInfo)
-        stopKoin()
     }
 }

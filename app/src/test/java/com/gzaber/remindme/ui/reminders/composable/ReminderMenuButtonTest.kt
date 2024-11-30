@@ -7,7 +7,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.gzaber.remindme.R
-import com.gzaber.remindme.helper.RobolectricTestActivity
+import com.gzaber.remindme.helper.RobolectricTestRule
+import com.gzaber.remindme.helper.TestApplication
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -15,8 +16,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class ReminderMenuButtonTest {
 
     private val context = RuntimeEnvironment.getApplication()
@@ -24,7 +27,7 @@ class ReminderMenuButtonTest {
     private var isDeleteOptionClicked = false
 
     @get:Rule(order = 0)
-    val robolectricTestActivityRule = RobolectricTestActivity()
+    val robolectricTestRule = RobolectricTestRule()
 
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()

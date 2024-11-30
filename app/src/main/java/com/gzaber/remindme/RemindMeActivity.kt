@@ -13,7 +13,7 @@ class RemindMeActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RemindMeTheme {
-                RemindMeNavGraph()
+                RemindMeNavigation()
             }
         }
     }

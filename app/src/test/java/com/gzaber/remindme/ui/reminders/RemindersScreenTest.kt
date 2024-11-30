@@ -10,7 +10,8 @@ import androidx.compose.ui.test.performClick
 import com.gzaber.remindme.R
 import com.gzaber.remindme.data.repository.RemindersRepository
 import com.gzaber.remindme.data.repository.model.Reminder
-import com.gzaber.remindme.helper.RobolectricTestActivity
+import com.gzaber.remindme.helper.RobolectricTestRule
+import com.gzaber.remindme.helper.TestApplication
 import com.gzaber.remindme.helper.plus
 import com.gzaber.remindme.shared.atPresent
 import com.gzaber.remindme.shared.minus
@@ -28,8 +29,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class RemindersScreenTest {
 
     private lateinit var repository: RemindersRepository
@@ -42,7 +45,7 @@ class RemindersScreenTest {
     private val context = RuntimeEnvironment.getApplication()
 
     @get:Rule(order = 0)
-    val robolectricTestActivityRule = RobolectricTestActivity()
+    val robolectricTestRule = RobolectricTestRule()
 
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()

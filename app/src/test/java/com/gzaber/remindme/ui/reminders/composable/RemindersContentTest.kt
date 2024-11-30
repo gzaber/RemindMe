@@ -11,7 +11,8 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
-import com.gzaber.remindme.helper.RobolectricTestActivity
+import com.gzaber.remindme.helper.RobolectricTestRule
+import com.gzaber.remindme.helper.TestApplication
 import com.gzaber.remindme.ui.reminders.model.ExpirationStatus
 import com.gzaber.remindme.ui.reminders.model.UiReminder
 import org.junit.Rule
@@ -19,8 +20,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class RemindersContentTest {
 
     private val context = RuntimeEnvironment.getApplication()
@@ -40,7 +43,7 @@ class RemindersContentTest {
     )
 
     @get:Rule(order = 0)
-    val robolectricTestActivityRule = RobolectricTestActivity()
+    val robolectricTestRule = RobolectricTestRule()
 
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()
