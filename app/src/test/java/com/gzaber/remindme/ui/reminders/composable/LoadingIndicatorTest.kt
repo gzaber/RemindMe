@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
-import com.gzaber.remindme.helper.RobolectricTestActivity
+import com.gzaber.remindme.helper.RobolectricTestRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,7 +17,7 @@ import org.robolectric.RuntimeEnvironment
 class LoadingIndicatorTest {
 
     @get:Rule(order = 0)
-    val robolectricTestActivityRule = RobolectricTestActivity()
+    val robolectricTestRule = RobolectricTestRule()
 
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()

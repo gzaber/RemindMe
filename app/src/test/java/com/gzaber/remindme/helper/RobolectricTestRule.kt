@@ -8,9 +8,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.robolectric.Shadows
 
-class TestApplication : Application()
-
-class RobolectricTestActivity : TestWatcher() {
+class RobolectricTestRule : TestWatcher() {
     override fun starting(description: Description?) {
         super.starting(description)
         val appContext: Application = ApplicationProvider.getApplicationContext()
