@@ -7,13 +7,16 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
 import com.gzaber.remindme.helper.RobolectricTestRule
+import com.gzaber.remindme.helper.TestApplication
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class LoadingIndicatorTest {
 
     @get:Rule(order = 0)
