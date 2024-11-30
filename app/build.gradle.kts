@@ -83,4 +83,6 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core.ktx)
     testImplementation(libs.androidx.test.compose)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit4)
 }

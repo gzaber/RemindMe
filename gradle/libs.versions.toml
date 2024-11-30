@@ -44,6 +44,8 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "testCoreKtx" }
 androidx-test-compose = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin"}
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
