@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -85,4 +86,19 @@ dependencies {
     testImplementation(libs.androidx.test.compose)
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.test.junit4)
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("*ComposableSingletons*", "*_Impl*")
+                annotatedBy("*Preview*")
+            }
+        }
+        total {
+            xml { onCheck = true }
+            html { onCheck = true }
+        }
+    }
 }
