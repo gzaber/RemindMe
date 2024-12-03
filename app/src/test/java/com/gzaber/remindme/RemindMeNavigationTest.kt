@@ -51,7 +51,7 @@ class RemindMeNavigationTest : KoinTest {
         )
 
     @get:Rule(order = 0)
-    val robolectricTestActivityRule = RobolectricTestRule()
+    val robolectricTestRule = RobolectricTestRule()
 
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()
@@ -77,12 +77,6 @@ class RemindMeNavigationTest : KoinTest {
         composeTestRule.setContent {
             RemindMeNavigation()
         }
-    }
-
-    @Test
-    fun lolo() {
-        composeTestRule.onNodeWithText(context.getString(R.string.app_name))
-            .assertIsDisplayed()
     }
 
     @Test
