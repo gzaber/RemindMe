@@ -1,6 +1,7 @@
 package com.gzaber.remindme.ui.reminders
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onFirst
@@ -97,6 +98,25 @@ class RemindersScreenTest {
                 .assertIsDisplayed()
                 .performClick()
             onNodeWithText(context.getString(R.string.delete_reminder_dialog_title)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun reminderItem_deleteReminderConfirmed_closesDeleteDialog() {
+        setUpScreen()
+
+        with(composeTestRule) {
+            onAllNodesWithContentDescription(context.getString(R.string.reminder_menu_button_icon_description))
+                .onFirst()
+                .assertIsDisplayed()
+                .performClick()
+            onNodeWithText(context.getString(R.string.reminder_menu_button_delete_option))
+                .assertIsDisplayed()
+                .performClick()
+            onNodeWithText(context.getString(R.string.confirm_button_text))
+                .assertIsDisplayed()
+                .performClick()
+            onNodeWithText(context.getString(R.string.delete_reminder_dialog_title)).assertIsNotDisplayed()
         }
     }
 

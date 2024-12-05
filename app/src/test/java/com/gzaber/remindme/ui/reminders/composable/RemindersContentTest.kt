@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import com.gzaber.remindme.R
 import com.gzaber.remindme.helper.RobolectricTestRule
@@ -21,11 +22,14 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
 class RemindersContentTest {
 
+    private var reminderIdDeleteOption: Int? = null
+    private var reminderIdUpdateOption: Int? = null
     private val context = RuntimeEnvironment.getApplication()
     private val uiReminders = listOf(
         UiReminder(
@@ -100,12 +104,40 @@ class RemindersContentTest {
         }
     }
 
+    @Test
+    fun menuButton_deleteOptionClicked_callsOnDelete() {
+        setUpRemindersContent()
+
+        with(composeTestRule) {
+            onAllNodesWithContentDescription(context.getString(R.string.reminder_menu_button_icon_description))
+                .assertCountEquals(2).onFirst().performClick()
+            onNodeWithText(context.getString(R.string.reminder_menu_button_delete_option))
+                .assertIsDisplayed().performClick()
+        }
+
+        assertEquals(uiReminders.first().id, reminderIdDeleteOption)
+    }
+
+    @Test
+    fun menuButton_updateOptionClicked_callsOnUpdate() {
+        setUpRemindersContent()
+
+        with(composeTestRule) {
+            onAllNodesWithContentDescription(context.getString(R.string.reminder_menu_button_icon_description))
+                .assertCountEquals(2).onLast().performClick()
+            onNodeWithText(context.getString(R.string.reminder_menu_button_update_option))
+                .assertIsDisplayed().performClick()
+        }
+
+        assertEquals(uiReminders.last().id, reminderIdUpdateOption)
+    }
+
     private fun setUpRemindersContent(reminders: List<UiReminder> = uiReminders) {
         composeTestRule.setContent {
             RemindersContent(
                 reminders = reminders,
-                onUpdateReminder = {},
-                onDeleteReminder = {},
+                onUpdateReminder = { reminderIdUpdateOption = it },
+                onDeleteReminder = { reminderIdDeleteOption = it },
                 contentPadding = PaddingValues(0.dp)
             )
         }
