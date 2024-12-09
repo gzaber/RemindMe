@@ -26,7 +26,7 @@ class DefaultNotificationService(
 
     override fun send(id: Int, title: String, content: String) {
         val notification = NotificationCompat.Builder(context, NotificationService.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle(title)
             .setContentText(content)
             .build()
